@@ -1,0 +1,14 @@
+<resources>
+    <declare-styleable name="CircleImage">
+
+        <attr name="ProgressCircle_android_textColor" format="color" />
+
+        <attr name="ProgressCircle_android_textSize" format="integer" />
+        <attr name="ProgressCircle_strokeWidth" format="float" />
+        <attr name="ProgressCircle_progressColor" format="color" />
+        <attr name="ProgressCircle_incompleteProgressColor" format="color" />
+    </declare-styleable>
+
+
+
+</resources>

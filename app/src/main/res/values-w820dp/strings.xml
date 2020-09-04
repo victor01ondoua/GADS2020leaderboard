@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="submit">Submit</string>
+    <string name="project_submission">Project Submission</string>
+    <string name="submissionQuestion">Are You Sure?</string>
+    <string name="answerValidation">Yes</string>
+    <string name="msgSuccess">Submission Successful</string>
+    <string name="msgfailed">Submission not Successful</string>
+    <string name="learningmsg">  Learning hours ,</string>
+    <string name="skillMsg">  Skill IQ Score ,</string>
+    <string name="alphaTransition">alpha</string>
+    <string name="translationYTransition">translationY</string>
+    <string name="translationXTransition">translationX</string>
+</resources>
