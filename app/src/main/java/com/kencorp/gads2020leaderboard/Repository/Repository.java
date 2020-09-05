@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.Cache;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,7 +59,7 @@ public class Repository {
         LeaderBoardDb db = LeaderBoardDb.getInstance(application);
 
         dao = db.leaderBoardDao();
-        leaderService = new ServiceBuilder().builderService(LeaderService.class);
+        leaderService = new ServiceBuilder(application.getApplicationContext()).builderService(LeaderService.class);
 
         this.application = application ;
     }
@@ -123,6 +125,7 @@ public class Repository {
         } );
 
 
+
         final Call<List<Learner>> hourRequest = leaderService.getLearnersByHour();
 
 
@@ -138,7 +141,7 @@ public class Repository {
 
                         Log.v("Main", ""+learner);
 
-                        Toast.makeText(application.getApplicationContext(),"Data is loading.....",Toast.LENGTH_LONG).show();
+             //           Toast.makeText(application.getApplicationContext(),"Data is loading.....",Toast.LENGTH_LONG).show();
 
                         executorService.execute(new Runnable() {
                             @Override
@@ -176,42 +179,59 @@ public class Repository {
         } );
 
 
+
     }
 
     public LiveData<PagedList<Learner>> getLearners(){
 
-        executorService.execute(new Runnable() {
+        dao.getNumber().observeForever(new Observer<Integer>() {
             @Override
-            public void run() {
+            public void onChanged(Integer integer) {
 
-                n = dao.getNumber().getValue();
-                if(n==null){
+                if(integer==null){
+                 executorService.execute(new Runnable() {
+                @Override
+                public void run() {
 
-                    getData();
-                }
+
+
+                            getData();
+                    }
+                });
 
             }
+            }
+
         });
 
-        return new LivePagedListBuilder<>(dao.getBoardListTopLearners(),50).build();
+        return new LivePagedListBuilder<>(dao.getBoardListTopLearners(),20).build();
     }
 
 
     public LiveData<PagedList<Learner>> getTopSkill(){
 
-        executorService.execute(new Runnable() {
+
+        dao.getNumber().observeForever(new Observer<Integer>() {
             @Override
-            public void run() {
+            public void onChanged(Integer integer) {
 
-                n = dao.getNumber().getValue();
-                if( n==null){
 
-                    getData();
-                }
+                if( integer==null){
+
+                    executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                            getData();
+                    }
+                });
             }
+            }
+
         });
 
-        return new LivePagedListBuilder<>(dao.getBoardListTopSkill(),50).build();
+        return new LivePagedListBuilder<>(dao.getBoardListTopSkill(),20).build();
     }
 
 
@@ -242,4 +262,10 @@ public class Repository {
 
         return submit;
     }
+
+    public LiveData<Learner> getLearner(int learnerId){
+
+        return dao.getLearner(learnerId);
+    }
+
 }

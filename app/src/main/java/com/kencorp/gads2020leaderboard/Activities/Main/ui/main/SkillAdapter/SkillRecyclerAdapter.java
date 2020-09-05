@@ -1,5 +1,7 @@
 package com.kencorp.gads2020leaderboard.Activities.Main.ui.main.SkillAdapter;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +18,27 @@ public class SkillRecyclerAdapter extends PagedListAdapter<Learner,SkillViewHold
 
     private Learner learner;
 
+
+    private Activity activity;
+    private Intent intent;
+
+
+    public interface BoardItem{
+        void onClick();
+    }
+
     public SkillRecyclerAdapter() {
         super(diffCallback);
+    }
+
+
+
+    public void setActivity(Activity activity){
+        this.activity = activity ;
+    }
+
+    public void setIntent(Intent intent){
+        this.intent = intent;
     }
 
     @NonNull
@@ -35,6 +56,7 @@ public class SkillRecyclerAdapter extends PagedListAdapter<Learner,SkillViewHold
         if(learner!=null){
 
             holder.bindTo(learner);
+            holder.setExtras(this.activity,this.intent);
         }else{
 
             holder.clear();

@@ -35,7 +35,10 @@ public class LearningViewHolder extends RecyclerView.ViewHolder {
 
            // intent.setClass(itemView.getContext().getApplicationContext(), learnerActivity.class);
 
+            intent.putExtra("learnerId",learnerId);
             itemView.getContext().startActivity(intent);
+
+
 
             activity.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 

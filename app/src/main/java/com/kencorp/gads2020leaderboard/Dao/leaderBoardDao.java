@@ -28,6 +28,10 @@ public interface leaderBoardDao {
     @Query("Select count(*) from learner")
     LiveData<Integer> getNumber();
 
+
+    @Query("Select * from learner where Id = :id")
+    LiveData<Learner> getLearner(int id);
+
     @Insert(onConflict = REPLACE)
     void insertLearner(Learner... learner);
 

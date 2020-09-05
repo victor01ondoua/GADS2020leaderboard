@@ -51,7 +51,7 @@ public class PlaceholderFragment extends Fragment {
     private MainComponent component;
     private SkillRecyclerAdapter skillRecyclerAdapter;
 
-    private int index = 1;
+    private int index;
     private LearningViewHolder learningViewHolder;
     private LearningViewHolder learningViewHolder1;
 
@@ -80,7 +80,7 @@ public class PlaceholderFragment extends Fragment {
         int index = 1;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
-            //this.index =index ;
+            this.index =index ;
         }
         pageViewModel.setIndex(index);
     }
@@ -98,6 +98,52 @@ public class PlaceholderFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
 
+        RecyclerView.ItemAnimator animator = new RecyclerView.ItemAnimator() {
+            @Override
+            public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
+
+                return false;
+            }
+
+            @Override
+            public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
+
+                return false;
+            }
+
+            @Override
+            public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
+
+                return false;
+            }
+
+            @Override
+            public boolean animateChange(@NonNull RecyclerView.ViewHolder oldHolder, @NonNull RecyclerView.ViewHolder newHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
+                return false;
+            }
+
+            @Override
+            public void runPendingAnimations() {
+
+            }
+
+            @Override
+            public void endAnimation(@NonNull RecyclerView.ViewHolder item) {
+
+            }
+
+            @Override
+            public void endAnimations() {
+
+            }
+
+            @Override
+            public boolean isRunning() {
+                return false;
+            }
+        };
+
+        recyclerView.setItemAnimator(animator);
 
         learningRecyclerAdapter = new LearningRecyclerAdapter();
 
@@ -120,6 +166,7 @@ public class PlaceholderFragment extends Fragment {
             intent.setClass(getActivity().getApplicationContext(),learnerActivity.class);
             learningRecyclerAdapter.setIntent(intent);
 
+            /*
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
                 @Override
                 public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
@@ -151,12 +198,16 @@ public class PlaceholderFragment extends Fragment {
             });
 
             itemTouchHelper.attachToRecyclerView(recyclerView);
-
+*/
 
             pageViewModel.getTopLearners().observe(getActivity(),learningRecyclerAdapter::submitList);
 
         }else {
             recyclerView.setAdapter(skillRecyclerAdapter);
+            intent.setClass(getActivity().getApplicationContext(),learnerActivity.class);
+
+            skillRecyclerAdapter.setIntent(intent);
+
             pageViewModel.getTopSkill().observe(getActivity(),skillRecyclerAdapter::submitList);
         }
 
